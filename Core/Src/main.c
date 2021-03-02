@@ -46,7 +46,7 @@ UART_HandleTypeDef huart2;
 uint16_t ButtonMatrixState=0;
 uint32_t ButtonMatrixTimestamp=0;
 enum s{
-	s0=0,s1=1,s2=2,s3=3,s4=4,s5=5,s6=6,s7=7,s8=8,s9=9,s10=10,s11=11
+	s0=0,s1=1,s2=2,s3=3,s4=4,s5=5,s6=6,s7=7,s8=8,s9=9,s10=10,s11=11,s12=12,s13=13
 };
 uint8_t loop=0;
 /* USER CODE END PV */
@@ -56,7 +56,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-void  ButtonMatrixUpdate();
+void ButtonMatrixUpdate();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -105,147 +105,216 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  ButtonMatrixUpdate();
-	  if(loop==s0)
-	  {
-		  if(ButtonMatrixState==0b1000000)
-		  {
-			  loop=s1;
-		  }
-		  else if(ButtonMatrixState==0b1000)
-		  {
-			  loop=s0;
-		  }
-	  }
-	  else if(loop==s1)
-	  {
-		  if(ButtonMatrixState==0b1000000000)
-		  {
-			  loop=s2;
-		  }
-		  else if(ButtonMatrixState==0b1000)
-		   {
-		  	  loop=s0;
-		   }
-	  }
-	  else if(loop==s2)
+	  	  if(loop==s0)
 	  	  {
-	  		  if(ButtonMatrixState==0b10000000000)
-	  		  {
-	  			  loop=s3;
-	  		  }
-	  		  else if(ButtonMatrixState==0b1000)
-	  		   {
-	  		  	  loop=s0;
-	  		   }
+switch(ButtonMatrixState)
+{
+case 0x40:
+	ButtonMatrixState=0;
+	 loop=s1;
+	 break;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+	break;
+default:
+	loop=s12;
+	break;
+}
+
 	  	  }
-	  else if(loop==s3)
+	  	  else if(loop==s1)
 	  	  {
-	  		  if(ButtonMatrixState==0b10000)
-	  		  {
-	  			  loop=s4;
-	  		  }
-	  		  else if(ButtonMatrixState==0b1000)
-	  		   {
-	  		  	  loop=s0;
-	  		   }
+switch(ButtonMatrixState)
+{
+case 0b1000000000:
+	ButtonMatrixState=0;
+	 loop=s2;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+
 	  	  }
-	  else if(loop==s4)
+	  	  else if(loop==s2)
+	  	  	{
+
+switch(ButtonMatrixState)
+{
+case 0b10000000000:
+	ButtonMatrixState=0;
+	 loop=s3;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+	  	  	 }
+	  	  else if(loop==s3)
 	  	  	  {
-	  	  		  if(ButtonMatrixState==0b1000000000000)
-	  	  		  {
-	  	  			ButtonMatrixState=0;
-	  	  			  loop=s5;
-	  	  		  }
-	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  		   {
-	  	  		  	  loop=s0;
-	  	  		   }
-	  	  	  }
-	  else if(loop==s5)
-	  	  	  {
-	  	  		  if(ButtonMatrixState==0b100000)
-	  	  		  {
-	  	  			  ButtonMatrixState=0;
-	  	  			  loop=s6;
-	  	  		  }
-	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  		   {
-	  	  		  	  loop=s0;
-	  	  		   }
-	  	  	  }
-	  else if(loop==s6)
-	  	  	  {
-	  	  		  if(ButtonMatrixState==0b1000000000000)
-	  	  		  {
-	  	  			ButtonMatrixState=0;
-	  	  			  loop=s7;
-	  	  		  }
-	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  		   {
-	  	  		  	  loop=s0;
-	  	  		   }
-	  	  	  }
-	  else if(loop==s7)
+switch(ButtonMatrixState)
+{
+case 0b10000:
+	ButtonMatrixState=0;
+   loop=s4;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+              }
+	  	  else if(loop==s4)
 	  	  	  	  {
-	  	  	  		  if(ButtonMatrixState==0b1000000000000)
-	  	  	  		  {
-	  	  	  			ButtonMatrixState=0;
-	  	  	  			  loop=s8;
-	  	  	  		  }
-	  	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  	  		   {
-	  	  	  		  	  loop=s0;
-	  	  	  		   }
+switch(ButtonMatrixState)
+{
+case 0b1000000000000:
+	ButtonMatrixState=0;
+   loop=s5;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
 	  	  	  	  }
-	  else if(loop==s8)
-	  	  	  {
-	  	  		  if(ButtonMatrixState==0b1000000000000)
-	  	  		  {
-	  	  			ButtonMatrixState=0;
-	  	  			  loop=s9;
-	  	  		  }
-	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  		   {
-	  	  		  	  loop=s0;
-	  	  		   }
-	  	  	  }
-	  else if(loop==s9)
-	  	  	  {
-	  	  		  if(ButtonMatrixState==0b100000000)
-	  	  		  {
-	  	  			ButtonMatrixState=0;
-	  	  			  loop=s10;
-	  	  		  }
-	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  		   {
-	  	  		  	  loop=s0;
-	  	  		   }
-	  	  	  }
-	  else if(loop==s10)
+	  	  else if(loop==s5)
 	  	  	  	  {
-	  	  	  		  if(ButtonMatrixState==0b100000)
-	  	  	  		  {
-	  	  	  			ButtonMatrixState=0;
-	  	  	  			  loop=s11;
-	  	  	  		  }
-	  	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  	  		   {
-	  	  	  		  	  loop=s0;
-	  	  	  		   }
+switch(ButtonMatrixState)
+{
+case 0b100000:
+	ButtonMatrixState=0;
+   loop=s6;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
 	  	  	  	  }
-	  else if(loop==s11)
-	  	  	  {
-	  	  		  if(ButtonMatrixState==0x8000)
-	  	  		  {
-	  	  			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
-	  	  			  loop=s11;
-	  	  		  }
-	  	  		  else if(ButtonMatrixState==0b1000)
-	  	  		   {
-	  	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
-	  	  		  	  loop=s0;
-	  	  		   }
-	  	  	  }
+	  	  else if(loop==s6)
+	  	  	  	  {
+switch(ButtonMatrixState)
+{
+case 0b1000000000000:
+	ButtonMatrixState=0;
+   loop=s7;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+	  	  	  	  }
+	  	  else if(loop==s7)
+	  	  	  	  	  {
+switch(ButtonMatrixState)
+{
+case 0b1000000000000:
+	ButtonMatrixState=0;
+   loop=s8;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+	  	  	  	  	  }
+	  	  else if(loop==s8)
+	  	  	  	  {
+switch(ButtonMatrixState)
+{
+case 0b1000000000000:
+	ButtonMatrixState=0;
+   loop=s9;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+	  	  	  	  }
+	  	  else if(loop==s9)
+	  	  	  	  {
+switch(ButtonMatrixState)
+{
+case 0b100000000:
+	ButtonMatrixState=0;
+   loop=s10;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+	  	  	  	  }
+	  	  else if(loop==s10)
+	  	  	  	  	  {
+switch(ButtonMatrixState)
+{
+case 0b100000:
+	ButtonMatrixState=0;
+   loop=s11;
+case 0:
+	break;
+case 0b1000:
+	loop=s0;
+default:
+	loop=s12;
+}
+	  	  	  	  	  }
+	  	  else if(loop==s11)
+	  	  	  	  {
+switch(ButtonMatrixState)
+{
+case 0x8000:
+	ButtonMatrixState=0;
+   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+   loop=s11;
+case 0:
+	break;
+case 0b1000:
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+	loop=s0;
+default:
+	loop=s12;
+}
+	  	  	  	  }
+	  	  else if(loop==s12)
+	  	  {
+switch(ButtonMatrixState)
+{
+case 0b1000:
+	ButtonMatrixState=0;
+	loop=s0;
+default:
+	loop=s13;
+}
+	  	  }
+	  	else if(loop==s13)
+	  		  	  {
+switch(ButtonMatrixState)
+{
+case 0b1000:
+	ButtonMatrixState=0;
+	loop=s0;
+}
+	  		  	  }
+
+
 
   }
   /* USER CODE END 3 */
